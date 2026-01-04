@@ -13,8 +13,23 @@ typedef struct{
 typedef struct{
     Vector2 position;
     float speed;
+    int size;
+    Color color;
 } Player;
 
+void drawMap(int mapWidth, int mapHeight, customCamera cam){
+    for (int x = 0; x < mapWidth; x++)
+    {
+        for (int y = 0; y < mapHeight; y++)
+        {
+            DrawRectangle(x-cam.position.x + cam.offset.x, y-cam.position.y + cam.offset.x, 64,64, GREEN);
+        } 
+    }
+}
+
+void drawPlayer(Player player, customCamera cam){
+    DrawRectangle(player.position.x - cam.position.x + cam.offset.x, player.position.y - cam.position.y + cam.offset.y, player.size, player.size, player.color);
+}
 
 int main(){
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "custom camera");
@@ -26,6 +41,9 @@ int main(){
     Player player;
     player.position = (Vector2){640, 360};
     player.speed = 300.0f;
+    player.size = 64;
+    player.color = RED;
+
     customCamera cam = { 0 };
     cam.position = player.position;
     cam.offset = (Vector2){SCREENWIDTH/2.0f, SCREENHEIGHT/2.0f};
@@ -42,6 +60,18 @@ int main(){
 
         cam.position.x = player.position.x;
         cam.position.y = player.position.y;
+
+        BeginDrawing();
+
+        ClearBackground(BLACK);
+
+        drawMap(mapWidth, mapHeight, cam);
+        drawPlayer(player, cam);
+
+
+        EndDrawing();
     }
+    CloseWindow();
+    return 0;
 }
 
