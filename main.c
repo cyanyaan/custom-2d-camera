@@ -17,18 +17,18 @@ typedef struct{
     Color color;
 } Player;
 
-void drawMap(int mapWidth, int mapHeight, customCamera cam){
-    for (int x = 0; x < mapWidth; x++)
+void drawMap(int mapWidth, int mapHeight, customCamera *cam){
+    for (int x = 0; x < mapWidth; x+=64)
     {
-        for (int y = 0; y < mapHeight; y++)
+        for (int y = 0; y < mapHeight; y+=64)
         {
-            DrawRectangle(x-cam.position.x + cam.offset.x, y-cam.position.y + cam.offset.x, 64,64, GREEN);
+            DrawRectangle(x-cam->position.x + cam->offset.x, y-cam->position.y + cam->offset.x, 64,64, GREEN);
         } 
     }
 }
 
-void drawPlayer(Player player, customCamera cam){
-    DrawRectangle(player.position.x - cam.position.x + cam.offset.x, player.position.y - cam.position.y + cam.offset.y, player.size, player.size, player.color);
+void drawPlayer(Player *player, customCamera *cam){
+    DrawRectangle(player->position.x - cam->position.x + cam->offset.x, player->position.y - cam->position.y + cam->offset.y, player->size, player->size, player->color);
 }
 
 int main(){
@@ -65,8 +65,8 @@ int main(){
 
         ClearBackground(BLACK);
 
-        drawMap(mapWidth, mapHeight, cam);
-        drawPlayer(player, cam);
+        drawMap(mapWidth, mapHeight, &cam);
+        drawPlayer(&player, &cam);
 
 
         EndDrawing();
